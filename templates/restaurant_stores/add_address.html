@@ -1,0 +1,577 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+<h1 class="text-center text-3xl underline">Add Address</h1>
+<form class="max-w-2xl mx-auto" method="post" action="{% url 'restaurant_stores:add_address' %}">
+  {% csrf_token %}
+  <div class="mb-5">
+    <label
+      for="street"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Street :
+    </label>
+    <input
+      type="text"
+      id="street"
+      name="street"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Gorey Bazar"
+      required
+    />
+  </div>
+  <div class="mb-5">
+    <label
+      for="appratment_number"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Appartment Number :
+    </label>
+    <input
+      type="text"
+      id="appratment_number"
+      name="appratment_number"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="123"
+    />
+  </div>
+  <div class="mb-5">
+    <label
+      for="city"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >City :
+    </label>
+    <input
+      type="text"
+      id="city"
+      name="city"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Delhi"
+      required
+    />
+  </div>
+  <div class="mb-5">
+    <label
+      for="state"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >State :
+    </label>
+    <select
+      id="state"
+      name="state"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      required
+    >
+      <option value="IN_AN">Andaman and Nicobar Islands</option>
+
+      <option value="IN_AP">Andhra Pradesh</option>
+
+      <option value="IN_AR">Arunachal Pradesh</option>
+
+      <option value="IN_AS">Assam</option>
+
+      <option value="IN_BR">Bihar</option>
+
+      <option value="IN_CH">Chandigarh</option>
+
+      <option value="IN_CT">Chhattisgarh</option>
+
+      <option value="IN_DD">Daman and Diu</option>
+
+      <option value="IN_DL">Delhi</option>
+
+      <option value="IN_GA">Goa</option>
+
+      <option value="IN_GJ">Gujarat</option>
+
+      <option value="IN_HR">Haryana</option>
+
+      <option value="IN_HP">Himachal Pradesh</option>
+
+      <option value="IN_JK">Jammu and Kashmir</option>
+
+      <option value="IN_JH">Jharkhand</option>
+
+      <option value="IN_KA">Karnataka</option>
+
+      <option value="IN_KL">Kerala</option>
+
+      <option value="IN_LA">Ladakh</option>
+
+      <option value="IN_LD">Lakshadweep</option>
+
+      <option value="IN_MH">Maharashtra</option>
+
+      <option value="IN_MN">Manipur</option>
+
+      <option value="IN_ML">Meghalaya</option>
+
+      <option value="IN_MZ">Mizoram</option>
+
+      <option value="IN_MP">Madhya Pradesh</option>
+
+      <option value="IN_NR">Nagaland</option>
+
+      <option value="IN_OR">Odisha</option>
+
+      <option value="IN_PY">Puducherry</option>
+
+      <option value="IN_PB">Punjab</option>
+
+      <option value="IN_RJ">Rajasthan</option>
+
+      <option value="IN_SK">Sikkim</option>
+
+      <option value="IN_TN">Tamil Nadu</option>
+
+      <option value="IN_TG">Telangana</option>
+
+      <option value="IN_TR">Tripura</option>
+
+      <option value="IN_UP" selected="">Uttar Pradesh</option>
+
+      <option value="IN_UT">Uttarakhand</option>
+
+      <option value="IN_WB">West Bengal</option>
+    </select>
+  </div>
+  <div class="mb-5">
+    <label
+      for="postal_code"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Postal Code :
+    </label>
+    <input
+      type="number"
+      id="postal_code"
+      name="postal_code"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="156842"
+      required
+    />
+  </div>
+  <div class="mb-5">
+    <label
+      for="country"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Country :
+    </label>
+    <select
+      id="country"
+      name="country"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      required
+    >
+      <option value="1">Afghanistan</option>
+
+      <option value="2">Albania</option>
+
+      <option value="3">Algeria</option>
+
+      <option value="4">Andorra</option>
+
+      <option value="5">Angola</option>
+
+      <option value="6">Antigua and Barbuda</option>
+
+      <option value="7">Argentina</option>
+
+      <option value="8">Armenia</option>
+
+      <option value="9">Australia</option>
+
+      <option value="10">Austria</option>
+
+      <option value="11">Azerbaijan</option>
+
+      <option value="12">Bahamas</option>
+
+      <option value="13">Bahrain</option>
+
+      <option value="14">Bangladesh</option>
+
+      <option value="15">Barbados</option>
+
+      <option value="16">Belarus</option>
+
+      <option value="17">Belgium</option>
+
+      <option value="18">Belize</option>
+
+      <option value="19">Benin</option>
+
+      <option value="20">Bhutan</option>
+
+      <option value="21">Bolivia</option>
+
+      <option value="22">Bosnia and Herzegovina</option>
+
+      <option value="23">Botswana</option>
+
+      <option value="24">Brazil</option>
+
+      <option value="25">Brunei</option>
+
+      <option value="26">Bulgaria</option>
+
+      <option value="27">Burkina Faso</option>
+
+      <option value="28">Burundi</option>
+
+      <option value="29">Cabo Verde</option>
+
+      <option value="30">Cambodia</option>
+
+      <option value="31">Cameroon</option>
+
+      <option value="32">Canada</option>
+
+      <option value="33">Central African Republic</option>
+
+      <option value="34">Chad</option>
+
+      <option value="35">Chile</option>
+
+      <option value="36">China</option>
+
+      <option value="37">Colombia</option>
+
+      <option value="38">Comoros</option>
+
+      <option value="39">Congo</option>
+
+      <option value="40">Costa Rica</option>
+
+      <option value="41">Croatia</option>
+
+      <option value="42">Cuba</option>
+
+      <option value="43">Cyprus</option>
+
+      <option value="44">Czech Republic</option>
+
+      <option value="45">Democratic Republic of the Congo</option>
+
+      <option value="46">Denmark</option>
+
+      <option value="47">Djibouti</option>
+
+      <option value="48">Dominica</option>
+
+      <option value="49">Dominican Republic</option>
+
+      <option value="50">Ecuador</option>
+
+      <option value="51">Egypt</option>
+
+      <option value="52">El Salvador</option>
+
+      <option value="53">Equatorial Guinea</option>
+
+      <option value="54">Eritrea</option>
+
+      <option value="55">Estonia</option>
+
+      <option value="56">Eswatini</option>
+
+      <option value="57">Ethiopia</option>
+
+      <option value="58">Fiji</option>
+
+      <option value="59">Finland</option>
+
+      <option value="60">France</option>
+
+      <option value="61">Gabon</option>
+
+      <option value="62">Gambia</option>
+
+      <option value="63">Georgia</option>
+
+      <option value="64">Germany</option>
+
+      <option value="65">Ghana</option>
+
+      <option value="66">Greece</option>
+
+      <option value="67">Grenada</option>
+
+      <option value="68">Guatemala</option>
+
+      <option value="69">Guinea</option>
+
+      <option value="70">Guinea-Bissau</option>
+
+      <option value="71">Guyana</option>
+
+      <option value="72">Haiti</option>
+
+      <option value="73">Honduras</option>
+
+      <option value="74">Hungary</option>
+
+      <option value="75">Iceland</option>
+
+      <option value="76" selected="">India</option>
+
+      <option value="77">Indonesia</option>
+
+      <option value="78">Iran</option>
+
+      <option value="79">Iraq</option>
+
+      <option value="80">Ireland</option>
+
+      <option value="81">Israel</option>
+
+      <option value="82">Italy</option>
+
+      <option value="83">Ivory Coast</option>
+
+      <option value="84">Jamaica</option>
+
+      <option value="85">Japan</option>
+
+      <option value="86">Jordan</option>
+
+      <option value="87">Kazakhstan</option>
+
+      <option value="88">Kenya</option>
+
+      <option value="89">Kiribati</option>
+
+      <option value="90">Korea North</option>
+
+      <option value="91">Korea South</option>
+
+      <option value="92">Kuwait</option>
+
+      <option value="93">Kyrgyzstan</option>
+
+      <option value="94">Laos</option>
+
+      <option value="95">Latvia</option>
+
+      <option value="96">Lebanon</option>
+
+      <option value="97">Lesotho</option>
+
+      <option value="98">Liberia</option>
+
+      <option value="99">Libya</option>
+
+      <option value="100">Liechtenstein</option>
+
+      <option value="101">Lithuania</option>
+
+      <option value="102">Luxembourg</option>
+
+      <option value="103">Madagascar</option>
+
+      <option value="104">Malawi</option>
+
+      <option value="105">Malaysia</option>
+
+      <option value="106">Maldives</option>
+
+      <option value="107">Mali</option>
+
+      <option value="108">Malta</option>
+
+      <option value="109">Marshall Islands</option>
+
+      <option value="110">Mauritania</option>
+
+      <option value="111">Mauritius</option>
+
+      <option value="112">Mexico</option>
+
+      <option value="113">Micronesia</option>
+
+      <option value="114">Moldova</option>
+
+      <option value="115">Monaco</option>
+
+      <option value="116">Mongolia</option>
+
+      <option value="117">Montenegro</option>
+
+      <option value="118">Morocco</option>
+
+      <option value="119">Mozambique</option>
+
+      <option value="120">Myanmar</option>
+
+      <option value="121">Namibia</option>
+
+      <option value="122">Nauru</option>
+
+      <option value="123">Nepal</option>
+
+      <option value="124">Netherlands</option>
+
+      <option value="125">New Zealand</option>
+
+      <option value="126">Nicaragua</option>
+
+      <option value="127">Niger</option>
+
+      <option value="128">Nigeria</option>
+
+      <option value="129">North Macedonia</option>
+
+      <option value="130">Norway</option>
+
+      <option value="131">Oman</option>
+
+      <option value="132">Pakistan</option>
+
+      <option value="133">Palau</option>
+
+      <option value="134">Palestine</option>
+
+      <option value="135">Panama</option>
+
+      <option value="136">Papua New Guinea</option>
+
+      <option value="137">Paraguay</option>
+
+      <option value="138">Peru</option>
+
+      <option value="139">Philippines</option>
+
+      <option value="140">Poland</option>
+
+      <option value="141">Portugal</option>
+
+      <option value="142">Qatar</option>
+
+      <option value="143">Romania</option>
+
+      <option value="144">Russia</option>
+
+      <option value="145">Rwanda</option>
+
+      <option value="146">Saint Kitts and Nevis</option>
+
+      <option value="147">Saint Lucia</option>
+
+      <option value="148">Saint Vincent and the Grenadines</option>
+
+      <option value="149">Samoa</option>
+
+      <option value="150">San Marino</option>
+
+      <option value="151">Sao Tome and Principe</option>
+
+      <option value="152">Saudi Arabia</option>
+
+      <option value="153">Senegal</option>
+
+      <option value="154">Serbia</option>
+
+      <option value="155">Seychelles</option>
+
+      <option value="156">Sierra Leone</option>
+
+      <option value="157">Singapore</option>
+
+      <option value="158">Slovakia</option>
+
+      <option value="159">Slovenia</option>
+
+      <option value="160">Solomon Islands</option>
+
+      <option value="161">Somalia</option>
+
+      <option value="162">South Africa</option>
+
+      <option value="163">South Sudan</option>
+
+      <option value="164">Spain</option>
+
+      <option value="165">Sri Lanka</option>
+
+      <option value="166">Sudan</option>
+
+      <option value="167">Suriname</option>
+
+      <option value="168">Sweden</option>
+
+      <option value="169">Switzerland</option>
+
+      <option value="170">Syria</option>
+
+      <option value="171">Taiwan</option>
+
+      <option value="172">Tajikistan</option>
+
+      <option value="173">Tanzania</option>
+
+      <option value="174">Thailand</option>
+
+      <option value="175">Timor-Leste</option>
+
+      <option value="176">Togo</option>
+
+      <option value="177">Tonga</option>
+
+      <option value="178">Trinidad and Tobago</option>
+
+      <option value="179">Tunisia</option>
+
+      <option value="180">Turkey</option>
+
+      <option value="181">Turkmenistan</option>
+
+      <option value="182">Tuvalu</option>
+
+      <option value="183">Uganda</option>
+
+      <option value="184">Ukraine</option>
+
+      <option value="185">United Arab Emirates</option>
+
+      <option value="186">United Kingdom</option>
+
+      <option value="187">United States</option>
+
+      <option value="188">Uruguay</option>
+
+      <option value="189">Uzbekistan</option>
+
+      <option value="190">Vanuatu</option>
+
+      <option value="191">Vatican City</option>
+
+      <option value="192">Venezuela</option>
+
+      <option value="193">Vietnam</option>
+
+      <option value="194">Yemen</option>
+
+      <option value="195">Zambia</option>
+
+      <option value="196">Zimbabwe</option>
+    </select>
+  </div>
+  <div class="mb-5">
+    <label
+      for="landmark"
+      class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+      >Landmark :
+    </label>
+    <input
+      type="text"
+      id="landmark"
+      name="landmark"
+      class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+      placeholder="Near place name"
+    />
+  </div>
+  <button
+    type="submit"
+    class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mt-3"
+  >
+    Submit
+  </button>
+</form>
+
+{% endblock content %}

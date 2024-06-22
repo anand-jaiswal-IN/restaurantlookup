@@ -1,0 +1,364 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+
+<div>
+<div class="flex flex-col lg:flex-row gap-6">
+  <div class="left-container w-full lg:w-1/3 mb-6">
+    <div class="">
+      <img
+        src="/media/{{restaurant.image_logo}}"
+        alt="Restaurant logo"
+        class="w-64"
+      />
+      <button
+        type="button"
+        data-modal-target="default-modal" data-modal-toggle="default-modal"
+        class="focus:outline-none text-white bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:ring-yellow-300 font-medium rounded-lg text-sm py-2 px-4 my-4 dark:focus:ring-yellow-900"
+      >
+        Upload new logo
+      </button>
+      <div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-xl font-semibold text-gray-900 dark:text-white">
+                   Upload new logo
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+             <form enctype="multipart/form-data" action="{% url 'restaurant_stores:update_restaurant_logo' restaurant.pk %}" method="post">
+            <div class="flex items-center justify-center w-full px-4">
+            <label for="dropzone-file" class="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
+                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                    <svg class="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+            </svg>
+            <p class="mb-2 text-sm text-gray-500 dark:text-gray-400"><span class="font-semibold">Click to upload</span> or drag and drop</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Restaurant Logo</p>
+          </div>
+        <input name="image_logo" id="dropzone-file" type="file" class="hidden" accept="image/*" />
+        {% csrf_token %}
+    </label>
+</div> 
+            <!-- Modal footer -->
+            <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Upload</button>
+                <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Cancel</button>
+            </div>
+          </form>
+        </div>
+    </div>
+</div>
+    </div>
+    <h1 class="text-3xl font-bold py-6">{{restaurant.name}}</h1>
+
+    <form
+      action="{% url 'restaurant_stores:your_restaurant' restaurant.pk %}"
+      method="post"
+    >
+      {% csrf_token %}
+      <div class="mb-5">
+        <label
+          for="description"
+          class="text-base font-medium text-gray-900 dark:text-white"
+          >Description :
+        </label>
+
+        <textarea
+          name="description"
+          rows="4"
+          class="p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Write your thoughts here..."
+        >
+{{restaurant.description}}</textarea
+        >
+      </div>
+      <div class="mb-5">
+        <label
+          for="address"
+          class="block mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >Address :
+        </label>
+        <input
+          type="text"
+          name="address"
+          aria-label="disabled input"
+          class="mb-5 bg-gray-100 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          value="{{restaurant.address}}"
+          disabled
+        />
+      </div>
+      
+      <div class="mb-5">
+        <label
+          for="website"
+          class="block mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >Website URL :
+        </label>
+        <input
+          type="url"
+          name="website"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="http://example.com"
+          value="{{restaurant.website}}"
+        />
+      </div>
+
+      <div class="mb-5 flex justify-between">
+        <div>
+          <label
+            for="opening_hours_from"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Opening Hours From :
+          </label>
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none"
+            >
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <input
+              type="time"
+              name="opening_hours_from"
+              class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              min="06:00"
+              max="10:00"
+              value="{{restaurant.opening_hours_from|time:'H:i'}}"
+              required
+            />
+          </div>
+        </div>
+        <div>
+          <label
+            for="opening_hours_to"
+            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            >Opening Hours To :
+          </label>
+          <div class="relative">
+            <div
+              class="absolute inset-y-0 end-0 top-0 flex items-center pe-3.5 pointer-events-none"
+            >
+              <svg
+                class="w-4 h-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4a1 1 0 1 0-2 0v4a1 1 0 0 0 .293.707l3 3a1 1 0 0 0 1.414-1.414L13 11.586V8Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+            </div>
+            <input
+              type="time"
+              name="opening_hours_to"
+              class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              min="18:00"
+              max="22:00"
+              value="{{restaurant.opening_hours_to|time:'H:i'}}"
+              required
+            />
+          </div>
+        </div>
+      </div>
+      <div class="mb-8">
+        <label class="inline-flex items-center cursor-pointer">
+          <span class="text-base font-medium text-gray-900 dark:text-white mr-4"
+            >Is open now ?</span
+          >
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            name="is_open_now"
+            {% if restaurant.is_open_now %}
+            checked
+            {%endif%}
+          />
+          <div
+            class="relative w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+          ></div>
+        </label>
+      </div>
+
+      {% if not restaurant.is_open_now %}
+      <div class="mb-5">
+        <label
+          for="reason_for_not_opening"
+          class="block mb-2 text-base font-medium text-gray-900 dark:text-white"
+          >Reason For not Opening :
+        </label>
+        <input
+          type="text"
+          name="reason_for_not_opening"
+          class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+          placeholder="Write Reason for not opening"
+          value="{{restaurant.reason_for_not_opening}}"
+        />
+      </div>
+      {% endif %}
+
+      <button
+        type="submit"
+        class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+      >
+        Save
+      </button>
+    </form>
+  </div>
+  <div class="right-container w-full lg:w-2/3">
+    <div class="images-container">
+      <div class="md:ml-4 mb-4">
+        <div class="flex justify-between">
+          <h2 class="text-2xl font-semibold underline mb-4">Restaurant Images</h2>
+          <a href="{% url 'restaurant_stores:store' restaurant.pk %}" class="text-sm text-blue-500 hover:underline">{{restaurant.name}}</a>
+        </div>
+        <a href="{% url 'restaurant_stores:add_restaurant_image' restaurant.pk %}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 my-4 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add More Image</a>
+      </div>
+      <div class="flex flex-wrap md:flex-row justify-around">
+        {% for r_i in restaurant_images %}
+        <div
+          class="relative bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden w-full md:w-1/2 md:p-4 mb-4"
+        >
+          <img
+            src="/media/{{r_i.image}}"
+            alt="Image 1"
+            class="w-full h-48 object-cover"
+          />
+          <div class="py-4 px-2">
+            <p class="text-gray-700 dark:text-gray-300 mb-4">
+              {{r_i.description}}
+            </p>
+            <button 
+            data-modal-target="popup-modal" 
+            data-modal-toggle="popup-modal" 
+            type="button" 
+            class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+            onclick=deletePopupOpen(this)
+            data-deleteType = "restaurant_image"
+            data-deleteId = {{r_i.pk}}
+            data-restaurantId = {{restaurant.pk}}
+            data-popupText = "Do you sure to delete your restaurant image{{r_i.name}}"
+            >
+            Delete</button>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="dishes-container">
+      <div class="md:ml-4 mb-4">
+        <h2 class="text-2xl font-semibold underline mb-4">Restaurant Menu (Dishes)</h2>
+        <a href="{% url 'restaurant_stores:add_restaurant_dish' restaurant.pk %}" class="focus:outline-none text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-4 py-2 my-4 dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Add More Dish</a>
+      </div>
+      <div class="flex flex-wrap mx-2 mt-4">
+        {% for d in restaurant_dishes %}
+        <div class="w-full sm:w-1/2 lg:w-1/2 lg:p-2 py-2">
+          <div
+            class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-500"
+          >
+            <img
+              src="/media/{{d.image}}"
+              alt="Food Image"
+              class="w-full h-48 object-cover"
+            />
+            <div class="p-4">
+              <div class="flex justify-between">
+                <h3 class="font-bold text-xl mb-2">{{d.name}}</h3>
+                <p class="text-gray-700 font-bold dark:text-gray-300 mb-3">
+                  &#8377; {{d.price}}
+                </p>
+              </div>
+              <p class="text-gray-700 dark:text-gray-300 mb-3">{{d.description}}</p>
+              <div>
+                <a href="{% url 'restaurant_stores:dish' d.pk %}" class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-800">Read More</a>
+                <button 
+                data-modal-target="popup-modal" 
+                data-modal-toggle="popup-modal" 
+                type="button" 
+                class="py-2 px-4 bg-red-600 text-white rounded-md hover:bg-red-800" 
+                onclick=deletePopupOpen(this)
+                data-deleteType = "dish"
+                data-deleteId = {{d.pk}}
+                data-restaurantId = {{restaurant.pk}}
+                data-popupText = "Do you sure to delete your dish {{d.name}}"
+                >Delete</button>
+                
+              </div>
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="my-4">
+  <h2 class="text-2xl font-bold underline">Delete This Restaurant</h2>
+  <br>
+  <button 
+  data-modal-target="popup-modal" 
+  data-modal-toggle="popup-modal" 
+  type="button" 
+  class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+  onclick=deletePopupOpen(this)
+  data-deleteType = "restaurant"
+  data-deleteId = {{restaurant.pk}}
+  data-popupText = "Do you sure to delete your restaurant {{restaurant.name}}"
+  >Delete {{restaurant.name}}</button>
+
+  <div id="popup-modal" tabindex="-1" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <button type="button" class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="popup-modal" onclick=removeDataCollected()>
+                <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                </svg>
+                <span class="sr-only">Close modal</span>
+            </button>
+            <div class="p-4 md:p-5 text-center">
+                <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                </svg>
+                <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400" id="deletePopupText">Are you sure you want to delete this product?</h3>
+                <button 
+                type="button" 
+                id="deleteBtn" 
+                onclick=deleteData()  
+                data-modal-hide="popup-modal" 
+                class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center" 
+                data-csrf="{{csrf_token}}">
+                    Yes, I'm sure
+                </button>
+                <button data-modal-hide="popup-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                onclick=removeDataCollected()
+                >No, cancel</button>
+            </div>
+        </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock content %}

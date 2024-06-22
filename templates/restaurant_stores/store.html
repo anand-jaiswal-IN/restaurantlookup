@@ -1,0 +1,247 @@
+{% extends "../layout.html" %} {% load static %} {% load filters %} 
+{% block title %} {{title}} {%endblock title %} {% block content %}
+<div class="container mx-auto">
+  <!-- Restaurant Title -->
+  <h1 class="text-4xl mt-2 font-bold text-center">{{restaurant.name}}</h1>
+  <!-- Description -->
+  <p class="mb-4 text-center text-gray-700 dark:text-gray-300">
+    {{restaurant.description}}
+  </p>
+  <!-- Carousel -->
+  <div id="default-carousel" class="relative w-full" data-carousel="slide">
+    <!-- Carousel wrapper -->
+    <div class="relative h-56 overflow-hidden rounded-lg md:h-96">
+      <!-- Item 1 -->
+      {% for r in restaurant_images %}
+      <div class="hidden duration-700 ease-in-out" data-carousel-item>
+        <img
+          src="/media/{{r.image}}"
+          class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
+          alt="..."
+        />
+      </div>
+      {% endfor %}
+    </div>
+    <!-- Slider indicators -->
+    <div
+      class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse"
+    >
+      {% for r in restaurant_images %}
+      <button
+        type="button"
+        class="w-3 h-3 rounded-full"
+        aria-current="true"
+        aria-label="Slide 1"
+        data-carousel-slide-to="{{forloop.counter0}}"
+      ></button>
+      {% endfor %}
+    </div>
+    <!-- Slider controls -->
+    <button
+      type="button"
+      class="absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      data-carousel-prev
+    >
+      <span
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+      >
+        <svg
+          class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 6 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M5 1 1 5l4 4"
+          />
+        </svg>
+        <span class="sr-only">Previous</span>
+      </span>
+    </button>
+    <button
+      type="button"
+      class="absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
+      data-carousel-next
+    >
+      <span
+        class="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none"
+      >
+        <svg
+          class="w-4 h-4 text-white dark:text-gray-800 rtl:rotate-180"
+          aria-hidden="true"
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 6 10"
+        >
+          <path
+            stroke="currentColor"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="m1 9 4-4-4-4"
+          />
+        </svg>
+        <span class="sr-only">Next</span>
+      </span>
+    </button>
+  </div>
+
+  <!-- Food Offerings -->
+  <h2 class="text-3xl font-bold mt-8">Menu</h2>
+  <div class="flex flex-wrap -mx-2 mt-4">
+    {% for d in dishes %}
+    <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
+      <div
+        class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-500"
+      >
+        <img
+          src="/media/{{d.image}}"
+          alt="Food Image"
+          class="w-full h-48 object-cover"
+        />
+        <div class="p-4">
+          <div class="flex justify-between">
+            <h3 class="font-bold text-xl mb-2">{{d.name}}</h3>
+            <p class="text-gray-700 font-bold dark:text-gray-300 mb-3">
+              &#8377; {{d.price}}
+            </p>
+          </div>
+          <p class="text-gray-700 dark:text-gray-300 mb-3">{{d.description}}</p>
+          <a href="{% url 'restaurant_stores:dish' d.pk %}" class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-800">Read More</a>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+
+  <!-- Contact Details -->
+  <h2 class="text-3xl font-bold mt-8">Contact Us</h2>
+  <div class="mt-4">
+    <p class="text-gray-700 dark:text-gray-300">
+      <strong>Address:</strong> {{restaurant.address}}
+    </p>
+    <p class="text-gray-700 dark:text-gray-300">
+      <strong>Phone:</strong> {{restaurant.phone}}
+    </p>
+    <p class="text-gray-700 dark:text-gray-300">
+      <strong>Website:</strong>
+      <a
+        href="{{restaurant.website}}"
+        class="text-blue-500 dark:text-blue-400 hover:underline"
+      >
+        {{restaurant.website}}</a
+      >
+    </p>
+  </div>
+
+  <!-- Opening Hours -->
+  <h2 class="text-3xl font-bold mt-8">Opening Hours</h2>
+  <div class="mt-4 text-gray-700 dark:text-gray-300">
+    <!-- <p><strong>Monday:</strong> 9:00 AM - 10:00 PM</p>
+    <p><strong>Tuesday:</strong> 9:00 AM - 10:00 PM</p>
+    <p><strong>Wednesday:</strong> 9:00 AM - 10:00 PM</p>
+    <p><strong>Thursday:</strong> 9:00 AM - 10:00 PM</p>
+    <p><strong>Friday:</strong> 9:00 AM - 11:00 PM</p>
+    <p><strong>Saturday:</strong> 9:00 AM - 11:00 PM</p>
+    <p><strong>Sunday:</strong> 10:00 AM - 9:00 PM</p> -->
+    {% if restaurant.is_open_now %}
+    <p>
+      <span
+        class="font-bold bg-green-600 py-2 px-4 rounded-md text-white border-green-300 border-2"
+        >OPEN NOW</span
+      >
+      : Reach there faster
+    </p>
+    {% else %}
+    <p>
+      <span
+        class="font-bold bg-red-600 py-2 px-4 rounded-md text-white border-red-300 border-2"
+        >CLOSED NOW</span
+      >
+      : We are closed due to - "{{restaurant.reason_for_not_opening}}"
+    </p>
+
+    {% endif %}
+    <br />
+    <p>
+      <strong>All Days</strong>
+      <strong>(Monday</strong>
+
+      to
+      <strong>Sunday) : </strong>
+      <span class="bg-purple-600 text-white p-1 rounded-sm">
+      {{restaurant.opening_hours_from|time:"h:i A"}} - {{restaurant.opening_hours_to|time:"h:i A"}}
+      </span>
+    </p>
+  </div>
+
+  <!-- Map -->
+  <h2 class="text-3xl font-bold mt-8">Find Us Here</h2>
+  <div class="mt-4">
+    <iframe
+      class="w-full h-64"
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.019918479483!2d144.95605431543668!3d-37.81215227975181!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad642af0f11fd81%3A0xf5779b7a8a8aa22d!2sRestaurant!5e0!3m2!1sen!2sus!4v1614242923786!5m2!1sen!2sus"
+      allowfullscreen=""
+      loading="lazy"
+    ></iframe>
+  </div>
+
+  <!-- Reviews -->
+  <h2 class="text-3xl font-bold mt-8">Customer Reviews</h2>
+  <div class="mt-4 space-y-4">
+    <!-- <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg">
+      <p class="text-gray-700 dark:text-gray-300">
+        <strong>John Doe:</strong> Excellent food and wonderful service! Highly
+        recommend.
+      </p>
+    </div> -->
+
+    <div class="flex flex-wrap -mx-2 mt-4">
+      {% for r in restaurant_reviews %}
+      <div class="w-full sm:w-1/2 lg:w-1/3 p-2">
+        <figure class="max-w-screen-md shadow-md py-2 px-4 rounded-md">
+          <div class="flex items-center mb-4 text-yellow-300">
+            {% for _ in r.rating_number|times %}
+            <svg
+              class="w-5 h-5 me-1"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="currentColor"
+              viewBox="0 0 22 20"
+            >
+              <path
+                d="M20.924 7.625a1.523 1.523 0 0 0-1.238-1.044l-5.051-.734-2.259-4.577a1.534 1.534 0 0 0-2.752 0L7.365 5.847l-5.051.734A1.535 1.535 0 0 0 1.463 9.2l3.656 3.563-.863 5.031a1.532 1.532 0 0 0 2.226 1.616L11 17.033l4.518 2.375a1.534 1.534 0 0 0 2.226-1.617l-.863-5.03L20.537 9.2a1.523 1.523 0 0 0 .387-1.575Z"
+              />
+            </svg>
+            {% endfor %}
+          </div>
+          <blockquote>
+            <p class="text-gray-900 dark:text-white font-bold">"{{r.description}}"</p>
+          </blockquote>
+          <figcaption
+            class="flex items-center mt-6 space-x-3 rtl:space-x-reverse"
+          >
+            <img
+              class="w-12 h-12 rounded-full"
+              src="/media/{{r.user.profile_picture}}"
+              alt="profile picture"
+            />
+            <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
+                <cite class="pe-3 font-medium text-gray-900 dark:text-white">{{r.user.username}}</cite>
+                <cite class="ps-3 text-sm text-gray-500 dark:text-gray-400">{{r.user.get_full_name}}</cite>
+            </div>
+          </figcaption>
+        </figure>
+      
+    </div>
+    {% endfor %}
+  </div>
+  </div>
+</div>
+
+{% endblock content %}

@@ -1,0 +1,19 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+
+<h1 class="text-center text-3xl underline mb-5">Pending Review Tokens</h1>
+<div class="max-w-xl mx-auto">
+    {% if review_tokens|length == 0%}
+    <p class="text-center">No Pending Review Tokens</p>
+    {% endif %}
+    <ul>
+        {% for r in review_tokens%}
+        <li class="flex justify-between items-center mb-4">
+            <p class="text-sm"> <span class="font-bold text-lg">Token</span> = {{r.token}}</p>
+            <a href="{% url 'reviews:feedback' r.type_of_review r.pk %} " class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Review</a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+
+{% endblock content %}

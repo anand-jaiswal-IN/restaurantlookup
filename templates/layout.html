@@ -1,0 +1,231 @@
+{% load compress %} {%load static%}
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    {% compress css %}
+    <link rel="stylesheet" href="{% static 'src/output.css' %}" />
+    {% endcompress %} {% if css %}
+    <link rel="stylesheet" href="{% static css %}" />
+    {% endif %}
+    <title>{% block title %}My Site{% endblock %}</title>
+  </head>
+
+  <body class="">
+    <nav class="bg-white border-gray-200 dark:bg-gray-900">
+      <div
+        class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl p-4"
+      >
+        <div class="flex">
+          <a
+            href="{% url 'restaurant_stores:home' %}"
+            class="flex items-center space-x-3 rtl:space-x-reverse"
+          >
+            <img
+              src="{% static 'images/logo.jpg' %}"
+              class="h-8"
+              alt="Restaurant Logo"
+            />
+            <span
+              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+              >Restaurant Viewers</span
+            >
+          </a>
+          <button
+            onclick="toggleTheme()"
+            id="themeToggleBtn"
+            class="ml-4 py-1 px-2 bg-blue-500 text-white rounded dark:bg-yellow-500"
+          >
+            Light Mode
+          </button>
+        </div>
+        <div class="flex items-center space-x-6 rtl:space-x-reverse">
+          {% if user.is_authenticated %}
+          {% if not user.is_email_verified %}
+          <a
+            href="{% url 'accounts:verify_email' %}"
+            class="text-sm text-red-600 dark:text-red-500 hover:underline"
+            >Verify Email</a
+          >
+          {% endif %}
+          <a
+            href="{% url 'accounts:profile' %}"
+            data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+            class="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >{{user.username}}</a
+          >
+          <div id="dropdownHover" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
+            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+              <li>
+                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:update_user_details' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update Details</a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:change_username' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change Username</a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:change_password' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change Password</a>
+              </li>
+              <li>
+                <a href="{% url 'accounts:change_email' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change E-mail</a>
+              </li>
+            </ul>
+          </div>
+          <a
+            href="{% url 'accounts:logout' %}"
+            class="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >Logout</a
+          >
+          {% else %}
+          <a
+            href="{% url 'accounts:login' %}"
+            class="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >Login</a
+          >
+          <a
+            href="{% url 'accounts:signup' %}"
+            class="text-sm text-blue-600 dark:text-blue-500 hover:underline"
+            >Sign Up</a
+          >
+          {% endif %}
+        </div>
+      </div>
+    </nav>
+    <nav class="bg-gray-50 dark:bg-gray-700">
+      <div class="max-w-screen-xl px-4 py-3 mx-auto">
+        <div class="flex items-center">
+          <ul
+            class="flex flex-row font-medium mt-0 space-x-8 rtl:space-x-reverse text-sm"
+          >
+            <li>
+              <a
+                href="{% url 'restaurant_stores:home' %}"
+                class="text-gray-900 dark:text-white hover:underline"
+                aria-current="page"
+                >Home</a
+              >
+            </li>
+            {% comment %} <li>
+              <a
+                href="/admin"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Admin</a
+              >
+            </li> {% endcomment %}
+            <li>
+              <a
+                href="{% url 'restaurant_stores:restaurant_stores' %}"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Stores</a
+              >
+            </li>
+            {% if user.is_authenticated and user.user_type == 'RO' %}
+            <li>
+              <a
+                href="/accounts/profile/#yourRestaurantSection"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Your Restaurant</a
+              > 
+            </li>
+            <li>
+              <a
+                href="{% url 'reviews:create_token_review' %}"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Create Token</a
+              > 
+            </li>
+            <li>
+              <a
+                href="{% url 'reviews:pending_review_token' %}"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Pending Review Token</a
+              > 
+            </li>
+            {% elif user.is_authenticated %}
+            <li>
+              <a
+                href="{% url 'reviews:pending_review_token' %}"
+                class="text-gray-900 dark:text-white hover:underline"
+                >Pending Review Token</a
+              > 
+            </li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </nav>
+
+    <div class="messages">
+      {% if messages %} {% for message in messages %}
+
+      <!-- {% if message.tags %} class="{{ message.tags }}" {% endif %} -->
+      <div
+        class="{% if message.tags == 'success' %} bg-green-500 {% elif message.tags == 'error' %} bg-red-500 {% elif message.tags == 'info' %} bg-blue-500 {% elif message.tags == 'warning' %} bg-yellow-500 {% endif %} text-white px-6 py-2 border-0 rounded absolute right-0 mx-4"
+      >
+        <span class="inline-block align-middle mr-8 px-4">
+          <b class="capitalize"
+            >{% if message.tags %} {{ message.tags }} {% endif %}</b
+          >
+          - {{message}}
+        </span>
+        <button
+          class="absolute top-0 bottom-0 right-0 px-4 py-2 close-btn focus:outline-none hover:bg-slate-600 transition-all"
+          onclick="this.parentElement.remove();"
+        >
+          <svg
+            class="fill-current h-6 w-6 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+          >
+            <path
+              d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"
+            ></path>
+          </svg>
+        </button>
+      </div>
+
+      {% endfor %} {% endif %}
+    </div>
+    <main class="py-2 px-20 dark:bg-gray-800 dark:text-white">
+      {% block content %} {% endblock %}
+    </main>
+    <footer class="bg-white dark:bg-gray-900">
+      <div class="mx-auto w-full max-w-screen-xl p-4 py-6 lg:py-8">
+        <div class="md:flex md:justify-between">
+          <div class="mb-6 md:mb-0">
+            <a
+              href="{% url 'restaurant_stores:home' %}"
+              class="flex items-center"
+            >
+              <img
+                src="{% static 'images/logo.jpg' %}"
+                class="h-8 me-3"
+                alt="Restaurant Logo"
+              />
+              <span
+                class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
+                >Restaurant Viewers</span
+              >
+            </a>
+          </div>
+          <div class="sm:flex sm:items-center sm:justify-between">
+          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+            >© 2024
+            <a href="https://flowbite.com/" class="hover:underline">Restaurant Loopkup</a
+            >. All Rights Reserved.
+          </span>
+        </div>
+        </div>
+      </div>
+    </footer>
+
+    <script src="{% static 'flowbite.js'%}"></script>
+    <script src="{% static 'layout.js' %}"></script>
+    {% if js %}
+    <script src="{% static js %}"></script>
+    {% endif %}
+  </body>
+</html>

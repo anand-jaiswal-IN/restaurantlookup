@@ -1,0 +1,56 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+
+<div class="max-w-xl mx-auto">
+    <h1 class="text-2xl font-bold text-center mb-5 underline">Update User Details for {{user.username}}</h1>
+    <div class="flex justify-between flex-wrap mb-8">
+       <a href="{% url 'accounts:change_username' %}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Change Username</a>
+       <a href="{% url 'accounts:change_password' %}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Change Password</a>
+       <a href="{% url 'accounts:change_email' %}" class="text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800">Change E-mail</a>
+    </div>
+    <form action="{% url 'accounts:update_user_details' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-5 flex justify-between gap-4">
+            <div>
+                <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name : </label>
+                <input name="first_name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your First Name" value="{{customUser.first_name}}" required />
+            </div>
+            <div>
+                <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name : </label>
+                <input name="last_name" type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Your Last Name" value="{{customUser.last_name}}" required />
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="user_type" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">User Type : </label>
+            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="user_type">
+                <option value="NO" {% if customUser.user_type == "NO" %}selected{% endif %}>Normal</option>
+                <option value="RO" {% if customUser.user_type == "RO" %}selected{% endif %}>Restaurant Owner</option>
+            </select>  
+        </div>
+        <div class="mb-5">
+            <label for="date_of_birth" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Date Of Birth : </label>
+            <div class="relative max-w-sm">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M20 4a2 2 0 0 0-2-2h-2V1a1 1 0 0 0-2 0v1h-3V1a1 1 0 0 0-2 0v1H6V1a1 1 0 0 0-2 0v1H2a2 2 0 0 0-2 2v2h20V4ZM0 18a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8H0v10Zm5-8h10a1 1 0 0 1 0 2H5a1 1 0 0 1 0-2Z"/>
+                </svg>
+                </div>
+                <input name="date_of_birth" datepicker type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Select date of birth" value="{{customUser.date_of_birth|date:'d-m-Y'}}">
+            </div>
+        </div>
+        <div class="mb-5">
+            <label for="gender" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Gender : </label>
+            <select class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" name="gender">
+                <option value="M" {% if customUser.gender == "M" %}selected{% endif %}>Male</option>
+                <option value="F" {% if customUser.gender == "F" %}selected{% endif %}>Female</option>
+                <option value="O" {% if customUser.gender == "O" %}selected{% endif %}>Other</option>
+            </select>  
+        </div>
+        <div class="mb-5">
+            <label for="biography" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Biography : </label>
+            <textarea name="biography" rows="4" class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Write your thoughts here...">{{customUser.biography}}</textarea>
+        </div>
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Save</button>
+    </form>
+</div>
+{% endblock content %}

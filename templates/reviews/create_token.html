@@ -1,0 +1,87 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+
+<div class="max-w-sm mx-auto">
+    <h1 class="text-3xl font-bold mb-5 underline">Create Token</h1>
+    <form action="{% url 'reviews:create_token_review' %}" method="post">
+        {% csrf_token %}
+        <div class="mb-5">
+            <label for="type_of_review" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Type of Review : </label>
+            <select name="type_of_review" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                <option value="R">Restaurant</option>
+                <option value="D">Dish</option>
+            </select>
+        </div>
+
+        <div class="mb-5">
+            <label for="for_user" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">For User : </label>
+            <input type="text" name="for_user" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Input correct username" required />
+            <p class="text-sm text-red-500">Enter correct username to create token. if not, your token will be invalid.</p>
+        </div>
+
+        <div class="mb-5">
+            <label for="which_restaurant" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your Restaurant : </label>
+            <select name="which_restaurant" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" required>
+                {% for r in resturants %}
+                <option value="{{r.pk}}">{{r.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="mb-5 hidden" id="whichDishInput">
+            <label for="which_dish" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Dish : </label>
+            <select 
+            name="which_dish" 
+            id="whichDishSelect"
+            class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            >
+                
+            </select>
+        </div>
+
+        <button type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Send</button>
+    </form>
+    <script>
+        function getDishs() {
+
+            const which_dish = document.getElementById('whichDishSelect');
+            which_dish.innerHTML = "";
+            xhttp = new XMLHttpRequest();
+            xhttp.open("POST", `/reviews/get_dishes/`);
+            xhttp.setRequestHeader("X-CSRFToken", "{{ csrf_token }}");
+            xhttp.send(JSON.stringify({ restaurant_id: which_restaurant.value }));
+            xhttp.onreadystatechange = function () {
+                if (xhttp.readyState == XMLHttpRequest.DONE) {
+                    if (xhttp.status === 200) {
+                        const dishes = JSON.parse(xhttp.responseText).dishes;
+                        for (let i = 0; i < dishes.length; i++) {
+                            const option = document.createElement("option");
+                            option.value = dishes[i].pk;
+                            option.text = dishes[i].name;
+                            which_dish.appendChild(option);
+                        }
+                    } else {
+                        console.error("Error:", xhttp.status, xhttp.statusText);
+                    }
+                }
+            };
+        }
+
+        const type_of_review = document.querySelector('select[name="type_of_review"]');
+        const which_restaurant = document.querySelector('select[name="which_restaurant"]');
+
+        type_of_review.addEventListener('change', (e) => {
+            
+            if (e.target.value === 'D') {
+                document.getElementById("whichDishInput").classList.remove("hidden")
+            } else {
+                document.getElementById("whichDishInput").classList.add("hidden")
+            }   
+
+            getDishs();
+        })
+        which_restaurant.addEventListener('change', getDishs);
+    </script>
+</div>
+
+{% endblock content %}

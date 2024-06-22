@@ -1,0 +1,10 @@
+/* Add custom CSS for carousel functionality */
+.carousel {
+  display: flex;
+  overflow: hidden;
+  scroll-behavior: smooth;
+}
+.carousel-item {
+  min-width: 100%;
+  transition: transform 0.5s ease-in-out;
+}
