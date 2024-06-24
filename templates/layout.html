@@ -4,9 +4,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    {% compress css %}
-    <link rel="stylesheet" href="{% static 'src/output.css' %}" />
-    {% endcompress %} {% if css %}
+    <link rel="stylesheet" href="{% static 'tailwind/src/output.css' %}" />
+    {% if css %}
     <link rel="stylesheet" href="{% static css %}" />
     {% endif %}
     <title>{% block title %}My Site{% endblock %}</title>
@@ -29,7 +28,7 @@
             />
             <span
               class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-              >Restaurant Viewers</span
+              >Restaurant Lookup</span
             >
           </a>
           <button
@@ -207,7 +206,7 @@
               />
               <span
                 class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-                >Restaurant Viewers</span
+                >Restaurant Lookup</span
               >
             </a>
           </div>
@@ -222,7 +221,7 @@
       </div>
     </footer>
 
-    <script src="{% static 'flowbite.js'%}"></script>
+    <script src="{% static 'tailwind/flowbite.js'%}"></script>
     <script src="{% static 'layout.js' %}"></script>
     {% if js %}
     <script src="{% static js %}"></script>

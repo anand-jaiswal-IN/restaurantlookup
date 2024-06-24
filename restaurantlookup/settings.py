@@ -9,22 +9,29 @@ https://docs.djangoproject.com/en/5.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
-
 from pathlib import Path
+from os import environ
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+load_dotenv(BASE_DIR / ".env")
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-zreq-2$bea9d&4)x1v(a0w33#m=1o%-_@)7rae(hk1jm&7$9#+'
+SECRET_KEY = environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
+# DEBUG = True
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    '127.0.0.1',
+]
 
 
 # Application definition
@@ -36,7 +43,6 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-
     'compressor',
     'accounts',
     'restaurant_stores',
@@ -46,7 +52,7 @@ INSTALLED_APPS = [
 AUTH_USER_MODEL = "accounts.CustomUser" 
 
 MIDDLEWARE = [
-    
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -86,8 +92,14 @@ WSGI_APPLICATION = 'restaurantlookup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
+        # 'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.' + environ.get('DB_ENGINE', 'mysql'),
+        'NAME': environ.get('DB_NAME'),
+        'USER': environ.get('DB_USER'),
+        'PASSWORD': environ.get('DB_PASSWORD'),
+        'HOST': environ.get('DB_HOST'),
+        'PORT': environ.get('DB_PORT'),
     }
 }
 
@@ -128,7 +140,7 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'public'
-STATICFILES_DIRS = [ BASE_DIR / 'staticfiles', ]
+STATICFILES_DIRS = [ BASE_DIR / 'staticfiles',]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
@@ -139,23 +151,26 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-COMPRESS_ROOT = BASE_DIR / 'tailwind'
-COMPRESS_ENABLED = True
-STATICFILES_FINDERS = [
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'compressor.finders.CompressorFinder',
-]
+# COMPRESS_ROOT = BASE_DIR / 'tailwind'
+# COMPRESS_ENABLED = True
+# STATICFILES_FINDERS = [
+#     'django.contrib.staticfiles.finders.FileSystemFinder',
+#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+#     'compressor.finders.CompressorFinder',
+# ]
 
 LOGIN_URL = '/accounts/login/'
 
-EMAIL_HOST = 'smtp.gmail.com'    
-EMAIL_PORT = 465 
-EMAIL_HOST_USER = 'anandjaiswalprofessional@gmail.com'
-EMAIL_HOST_PASSWORD = 'wxpb cgoj detd zdhm'
-EMAIL_USE_TLS = False
-EMAIL_USE_SSL = True
+EMAIL_HOST = environ.get('EMAIL_HOST')  
+EMAIL_PORT = environ.get('EMAIL_PORT')
+EMAIL_HOST_USER = environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = environ.get('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = environ.get('EMAIL_USE_TLS')
+EMAIL_USE_SSL = environ.get('EMAIL_USE_SSL')
 
 
 # extra settings
-OTP_VALIDITY_MINUTES = 15
+OTP_VALIDITY_MINUTES = int(environ.get('OTP_VALIDITY_MINUTES'))
+
+# CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True

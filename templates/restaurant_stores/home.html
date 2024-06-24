@@ -1,30 +1,30 @@
 {% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
 {% block content %}
 
-<section class="">
+<section class="mb-10">
   <div class="py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16">
     <h1
       class="mb-4 text-4xl font-extrabold tracking-tight leading-none text-gray-900 md:text-5xl lg:text-5xl dark:text-white"
     >
-      Discover the Best Restaurants Around You
+      The <span class="text-green-400">Django</span> Project - Restaurant Lookup
     </h1>
     <p
       class="mb-8 text-lg font-normal text-gray-500 lg:text-xl sm:px-16 lg:px-24 dark:text-gray-400"
     >
-      At EatLocal, we believe that the best dining experiences are just around
-      the corner. Whether you're in the mood for a quick bite or a gourmet meal,
-      we've got you covered. Our platform connects you with a diverse range of
-      restaurants in your area, making it easy to find the perfect spot for any
-      occasion.
+      This new Django web application bridges the gap between restaurants and
+      users seeking convenient food ordering. Users can browse menus and make
+      informed choices, while restaurants gain a wider audience, analyze user
+      data to optimize menus, and grow their business based on valuable customer
+      insights.
     </p>
     <div
       class="flex flex-col space-y-4 sm:flex-row sm:justify-center sm:space-y-0"
     >
       <a
-        href="#"
+        href="{% url 'restaurant_stores:restaurant_stores' %}"
         class="inline-flex justify-center items-center py-3 px-5 text-base font-medium text-center text-white rounded-lg bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 dark:focus:ring-blue-900"
       >
-        Get started
+        Stores
         <svg
           class="w-3.5 h-3.5 ms-2 rtl:rotate-180"
           aria-hidden="true"
@@ -41,11 +41,133 @@
           />
         </svg>
       </a>
+      {% if not user.is_authenticated %}
       <a
-        href="#"
+        href="{% url 'accounts:login' %}"
         class="py-3 px-5 sm:ms-4 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-70"
       >
-        Learn more
+        Login
+      </a>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold mb-6">What this project contain ?</h1>
+    <div class="mb-5">
+      <h2 class="text-xl mb-4 text-orange-400 font-bold">
+        1. Custom user authentication system
+      </h2>
+      <p class="mb-2">
+        Although django provide built in user authentication system. But in this
+        project i have manupulated that user model into custom user model for
+        this project. I added custom fields and methods in user model. for
+        example date of birth, gender, etc.
+      </p>
+      <p>
+        User can register, login and see profile details. Profile details can be
+        updated. E-mail verification is also there in my project through otp.
+      </p>
+    </div>
+    <div class="mb-5">
+      <h2 class="text-xl mb-4 text-orange-400 font-bold">
+        2. Store (Restaurant, Dishes and Reviews)
+      </h2>
+      <p class="mb-2">
+        Store is the section of my website. Any user can visit to store section
+        and watch restaurant, dishes (with price and details) and reviews.
+      </p>
+    </div>
+    <div class="mb-5">
+      <h2 class="text-xl mb-4 text-orange-400 font-bold">3. Review Token</h2>
+      <p class="mb-2">
+        User can give review to any restaurant and their dishes. Restaurant
+        owner provide a token (through E-mail) for review their dishes and
+        restaurant. After that user can give review through pending review token
+        section of my website.
+      </p>
+    </div>
+    <div class="mb-5">
+      <h2 class="text-xl mb-4 text-orange-400 font-bold">
+        4. Restaurant and Dishes
+      </h2>
+      <p class="mb-2">
+        Those users who are owner of any restaurant can add, edit and delete
+        dishes to that restaurant. If restaurant owner have multiple branches in
+        different cities. He can handle with only one account for each city.
+        They can also add and delete multiple dishes to multiple restaurant.
+        With not only that owner can use token based review system to take
+        feedback and rating from customers.
+      </p>
+      <p>
+        They can mention that either shop is open or close with reason provided.
+      </p>
+    </div>
+  </div>
+  <div class="mb-6">
+    <h1 class="text-4xl font-bold mb-6">Summary</h1>
+    <p class="mb-2">
+      This is the simple <span class="text-green-400">django</span> framework
+      based <span class="font-bold">CRUD</span> project. This enhances my
+      learning towards software development. I learnt functionalities of
+      different apps work together, the logic building and the way software
+      developer works.
+    </p>
+
+    <p class="mb-2">
+      I have used tailwind and flowbite for writing frontend part of this
+      project. Along with that i used vanilla javascript for writing frontend
+      logics. XHtttp request is used for fetching data from backend through
+      javascript
+    </p>
+
+    <p class="mb-2">
+      For Database, I love sqlite3. But wait, it is lightweight database with
+      least functionalities written in 'C' language. So i used mysql for storing
+      data. For development purpose, offcourse you can use sqlite3 database. But
+      preference is yours to use. Django supports SQL database (mysql,
+      postgresql, microsoft server) and avoid to use NON-SQL database.
+    </p>
+
+    <p>
+      This project is an open source project. You can check
+      <a
+        href="https://github.com/anand-jaiswal-IN/restaurantlookup"
+        class="text-blue-500 underline"
+        >project github repository</a
+      >
+      for more details.
+    </p>
+  </div>
+  <div>
+    <h1 class="text-4xl font-bold mb-5">
+      <span class="text-red-400 underline"> Developer's profile </span>
+      Over different platform
+    </h1>
+    <p class="mb-4">
+      Follow over different social media platform for more details.
+    </p>
+    <div>
+      <a
+        href="https://github.com/anand-jaiswal-IN"
+        target="_blank"
+        class="py-2 px-4 bg-black text-white rounded text-lg"
+      >
+        Github
+      </a>
+      <a
+        href="https://x.com/anand_jaiswal__"
+        target="_blank"
+        class="py-2 px-4 ml-4 bg-gray-600 hover:bg-gray-800 text-white rounded text-lg"
+      >
+        Twitter
+      </a>
+      <a
+        href="https://www.linkedin.com/in/anand-jaiswal-810042233/"
+        target="_blank"
+        class="py-2 ml-4 px-4 bg-blue-600 hover:bg-blue-800 text-white rounded text-lg"
+      >
+        LinkedIn
       </a>
     </div>
   </div>

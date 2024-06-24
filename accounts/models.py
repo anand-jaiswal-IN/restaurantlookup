@@ -44,7 +44,14 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.username
+
+    def is_restaurant_user_type(self):
+        return self.user_type == "RO"
     
+    def set_restaurant_user_type(self):
+        self.user_type = "RO"
+        self.save()
+
 class OTP(models.Model):
 
     type_Of_otp_choices = [("email", "E"), ("phone", "P")]

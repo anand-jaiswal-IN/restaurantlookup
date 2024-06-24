@@ -40,7 +40,7 @@ def loginUser(req):
 
 def signup(req):
     if req.method == 'POST':
-        redirection_url = '/accounts/signup'
+        redirection_url = '/accounts/signup/'
         form = req.POST
 
         if form['email'] == '' or form['username'] == '' or form['password'] == '' or form['confirm_password'] == '':

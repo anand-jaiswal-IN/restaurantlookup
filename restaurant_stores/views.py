@@ -86,6 +86,10 @@ def add_restaurant(req):
             restaurant = form.save(commit=False)
             restaurant.user = req.user
             restaurant.save()
+            
+            if not req.user.is_restaurant_user_type():
+                req.user.set_restaurant_user_type()
+
             messages.success(req, f"Successfully added your restaurant with name = {restaurant.name}")
             return redirect("/accounts/profile/")
         else:
@@ -235,18 +239,18 @@ def add_restaurant_image(req, restaurant_id):
 def add_restaurant_dish(req, restaurant_id):
     if req.method == 'POST':
 
-        if Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
-            restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
-        else:
+        if not Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
             messages.error(req, "Unauthorized User")
             return render("/accounts/profile/")
         
+        restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
         form = AddDishForm(req.POST, req.FILES)    
-
         if form.is_valid():
             dish = form.save(commit=False)
             dish.restaurant = restaurant
             dish.save()
+            subcategories = form.cleaned_data['sub_category']
+            dish.sub_category.set(subcategories)  
             messages.success(req, f"Successfully added your dish")
             return redirect(f"/your_restaurant/{restaurant_id}/")
         else:

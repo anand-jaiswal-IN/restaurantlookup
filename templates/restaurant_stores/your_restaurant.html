@@ -104,11 +104,12 @@
           >Website URL :
         </label>
         <input
-          type="url"
+          type="text"
           name="website"
           class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
           placeholder="http://example.com"
           value="{{restaurant.website}}"
+          
         />
       </div>
 
@@ -141,8 +142,8 @@
               type="time"
               name="opening_hours_from"
               class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              min="06:00"
-              max="10:00"
+              min="00:00"
+              max="12:00"
               value="{{restaurant.opening_hours_from|time:'H:i'}}"
               required
             />
@@ -176,8 +177,8 @@
               type="time"
               name="opening_hours_to"
               class="bg-gray-50 border leading-none border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              min="18:00"
-              max="22:00"
+              min="16:00"
+              max="24:00"
               value="{{restaurant.opening_hours_to|time:'H:i'}}"
               required
             />
