@@ -1,0 +1,183 @@
+{% extends "../layout.html" %} {% block title %} {{title}} {% endblock title %}
+{% block content %}
+
+<div class="max-w-sm mx-auto">
+  <h1 class="text-3xl font-bold mb-5 text-center">Donate Us</h1>
+  <form action="" method="post" id="donationForm">
+    {% csrf_token %}
+    <div class="mb-5">
+      <label
+        for="amount"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Donation Amount</label
+      >
+      <input
+        type="number"
+        name="amount"
+        id="amountInput"
+        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Amount to donate in Rupee"
+        required
+      />
+    </div>
+    <div class="mb-5">
+      <button
+        type="button"
+        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        onclick="document.getElementById('amountInput').value = 100"
+      >
+        100
+      </button>
+      <button
+        type="button"
+        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        onclick="document.getElementById('amountInput').value = 200"
+      >
+        200
+      </button>
+      <button
+        type="button"
+        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        onclick="document.getElementById('amountInput').value = 500"
+      >
+        500
+      </button>
+      <button
+        type="button"
+        class="text-gray-900 bg-white border border-gray-300 focus:outline-none hover:bg-gray-100 focus:ring-4 focus:ring-gray-100 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:text-white dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-gray-600 dark:focus:ring-gray-700"
+        onclick="document.getElementById('amountInput').value = 1000"
+      >
+        1000
+      </button>
+    </div>
+    <div class="mb-5">
+      <label
+        for="message"
+        class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+        >Message / Note</label
+      >
+      <textarea
+        name="message"
+        id="messageInput"
+        rows="4"
+        class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        placeholder="Write note about your donation..."
+      ></textarea>
+    </div>
+    <button
+      type="submit"
+      id="rzp-submit-button"
+      class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 mb-5"
+    >
+      Checkout
+    </button>
+    <button
+      id="rzp-button1"
+      class="hidden text-white bg-green-700 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm w-full px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800 mb-5"
+    >
+      Pay
+    </button>
+  </form>
+</div>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  const donationForm = document.getElementById("donationForm");
+  const amountInput = document.getElementById("amountInput");
+  const rzpButton1 = document.getElementById("rzp-button1");
+  var order_rzp = null;
+  donationForm.onsubmit = (e) => {
+    e.preventDefault();
+    const xhttp = new XMLHttpRequest();
+    xhttp.open("POST", "/donation/create_razorpay_order/", true);
+    xhttp.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+    xhttp.send(
+      JSON.stringify({
+        amount: amountInput.value,
+      })
+    );
+    xhttp.onreadystatechange = function () {
+      if (xhttp.readyState === xhttp.DONE) {
+        if (xhttp.status == 200) {
+          order_rzp = JSON.parse(xhttp.responseText);
+          var options = {
+            key: "rzp_live_J7Bmlu1c8aBLV3", // Enter the Key ID generated from the Dashboard
+            amount: order_rzp.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            currency: order_rzp.currency,
+            name: "Restaurant Lookup", //your business name
+            description: "Donation",
+            image:
+              "https://static.vecteezy.com/system/resources/previews/016/133/291/original/simple-illustration-of-food-delivery-and-restaurant-logo-design-inspiration-icon-vector.jpg",
+            order_id: order_rzp.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            // callback_url: "https://eneqd3r9zrjok.x.pipedream.net/",
+            handler: function (response) {
+              Swal.fire({
+                icon: "success",
+                title: "Payment Successful!",
+                text: "Your donation is very precious for us.",
+              });
+
+              const xhttp = new XMLHttpRequest();
+              xhttp.open("POST", "/donation/", true);
+              xhttp.setRequestHeader("X-CSRFToken", "{{csrf_token}}");
+              xhttp.send(
+                JSON.stringify({
+                  amount: amountInput.value,
+                  message: document.getElementById("messageInput").value,
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                })
+              );
+              xhttp.onreadystatechange = function () {
+                if (xhttp.readyState === xhttp.DONE) {
+                  if (xhttp.status == 200) {
+                    console.log(JSON.parse(xhttp.responseText));
+                  } else {
+                    console.error("Error:", xhttp.status, xhttp.statusText);
+                  }
+                }
+              };
+            },
+            prefill: {
+              //We recommend using the prefill parameter to auto-fill customer's contact information especially their phone number
+              name: "{{user.full_name}}", //your customer's name
+              email: "{{user.email}}",
+              contact: "{{user.phone}}", //Provide the customer's phone number for better conversion rates
+            },
+            notes: {
+              address: "",
+            },
+            theme: {
+              color: "#3399cc",
+            },
+          };
+          var rzp1 = new Razorpay(options);
+          rzpButton1.classList.remove("hidden");
+          rzpButton1.onclick = function (e) {
+            rzp1.open();
+            e.preventDefault();
+          };
+          rzp1.on("payment.failed", function (response) {
+            console.log(response.error.code);
+            console.log(response.error.description);
+            console.log(response.error.source);
+            console.log(response.error.step);
+            console.log(response.error.reason);
+            console.log(response.error.metadata.order_id);
+            console.log(response.error.metadata.payment_id);
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: "Payment Failed.",
+            });
+          });
+        } else {
+          console.error("Error", xhttp.status, xhttp.statusText);
+        }
+      }
+    };
+  };
+</script>
+
+{% endblock content %}

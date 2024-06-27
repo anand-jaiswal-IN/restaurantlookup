@@ -30,7 +30,8 @@ urlpatterns = [
     path('', include('restaurant_stores.urls')),
     path('accounts/', include('accounts.urls')),
     path('reviews/', include('reviews.urls')),
-
+    path('donation/', include('donation.urls')),
+    
     path(environ.get('ADMIN_URL'), admin.site.urls),
 
 ]

@@ -25,7 +25,6 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
 DEBUG = True
 
 ALLOWED_HOSTS = [
@@ -47,12 +46,13 @@ INSTALLED_APPS = [
     'accounts',
     'restaurant_stores',
     'reviews',
+    'donation',
 ]
 
 AUTH_USER_MODEL = "accounts.CustomUser" 
 
 MIDDLEWARE = [
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    #'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -151,14 +151,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
-# COMPRESS_ROOT = BASE_DIR / 'tailwind'
-# COMPRESS_ENABLED = True
-# STATICFILES_FINDERS = [
-#     'django.contrib.staticfiles.finders.FileSystemFinder',
-#     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-#     'compressor.finders.CompressorFinder',
-# ]
-
 LOGIN_URL = '/accounts/login/'
 
 EMAIL_HOST = environ.get('EMAIL_HOST')  
@@ -171,6 +163,3 @@ EMAIL_USE_SSL = environ.get('EMAIL_USE_SSL')
 
 # extra settings
 OTP_VALIDITY_MINUTES = int(environ.get('OTP_VALIDITY_MINUTES'))
-
-# CSRF_COOKIE_SECURE = True
-# SESSION_COOKIE_SECURE = True

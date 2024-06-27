@@ -2,6 +2,11 @@
 
 This is a simple Django project created for learning and exploration purposes. It focuses on restaurant management and allows you to model various aspects like cities, restaurants, food categories, dishes, and user ratings for both restaurants and dishes.
 
+## Screenshots
+   ![Image 2](/screenshots/img2.png)
+   ![Image 3](/screenshots/img3.png)
+   ![Image 1](/screenshots/img1.png)
+
 ## Installation
 
 1. **Install Python 3**
@@ -16,10 +21,10 @@ This is a simple Django project created for learning and exploration purposes. I
 
 3. **Create a virtual environment**
 
-   Navigate to your desired folder and create a virtual environment named `django`.
+   Navigate to your desired folder and create a virtual environment named `venv`.
 
    ```bash
-   virtualenv django
+   virtualenv venv
    ```
 
 4. **Activate the virtual environment**
@@ -27,25 +32,25 @@ This is a simple Django project created for learning and exploration purposes. I
    - On Windows:
 
      ```bash
-     django\Scripts\activate
+     venv\Scripts\activate
      ```
 
    - On macOS/Linux:
 
      ```bash
-     source django/bin/activate
+     source venv/bin/activate
      ```
 
 5. **Fetch the project files from GitHub**
 
    ```bash
-   git clone https://github.com/anand-jaiswal-IN/firstDjangoProject
+   git clone https://github.com/anand-jaiswal-IN/restrauntlookup
    ```
 
 6. **Navigate to the project directory**
 
    ```bash
-   cd firstDjangoProject
+   cd restrauntlookup
    ```
 
 7. **Install dependencies**
@@ -54,7 +59,7 @@ This is a simple Django project created for learning and exploration purposes. I
    pip install -r requirements.txt
    ```
 
-## Models
+<!-- ## Models
 
 The project includes the following models:
 
@@ -63,30 +68,26 @@ The project includes the following models:
 - **Food_category:** Classifies the type of cuisine offered by a dish (e.g., Italian, Mexican).
 - **Dish:** Represents a dish offered by a restaurant with a name, description, and food category.
 - **Rating_restaurant:** Stores user ratings for a specific restaurant.
-- **Rating_dish:** Stores user ratings for a specific dish.
+- **Rating_dish:** Stores user ratings for a specific dish. -->
 
 ## Usage
 
 1. **Set up the project environment**
 
    Follow the installation steps above to set up your virtual environment and install dependencies.
+2. **Set up environment variables in the project**
 
-2. **Migrate the models**
+   In the project you find a file `.env.sample`, rename this file into `.env` and change the variables values into instruted.
+
+   if you want to use `sqlite3` as database then go to `restraurantlookup/settings.py` and search for `DATABASES` comment the desired values.
+
+3. **Migrate the models**
 
    Apply the database migrations to create the necessary tables.
 
    ```bash
    python manage.py migrate
    ```
-
-3. **Run the development server**
-
-   Start the Django development server to see your project in action.
-
-   ```bash
-   python manage.py runserver
-   ```
-
 4. **Use the Django admin interface**
 
    Create a superuser to access the Django admin interface.
@@ -95,4 +96,15 @@ The project includes the following models:
    python manage.py createsuperuser
    ```
 
-Navigate to `http://127.0.0.1:8000/admin` and log in with your superuser credentials to manage your models.
+5. **Run the development server**
+
+   Start the Django development server to see your project in action.
+
+   ```bash
+   python manage.py runserver
+   ```
+
+Navigate to `http://127.0.0.1:8000/` to view website and create users and restaurants.
+
+Navigate to `http://127.0.0.1:8000/admin/` and log in with your superuser credentials to manage your models.
+
