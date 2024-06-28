@@ -26,7 +26,7 @@ class Address (TimeStampedModel):
 
 class Restaurant(TimeStampedModel):
     name = models.CharField(max_length=50)
-    image_logo = models.ImageField(upload_to="images/restaurants_logo", default="images/restaurants_logo/default.png")
+    logo_url = models.URLField(default="https://res.cloudinary.com/dgzc1nbnk/image/upload/v1719569947/ce7cbrs6xdwezeurgxzz.jpg")
     address = models.ForeignKey(Address, on_delete=models.CASCADE)
     phone = models.CharField(max_length=20, unique=True)
     website = models.URLField(max_length=50, default="https://www.yourdomain.com")
@@ -42,7 +42,7 @@ class Restaurant(TimeStampedModel):
         return self.name
     
 class RestaurantImages(TimeStampedModel):
-    image = models.ImageField(upload_to="images/restaurant_images")
+    image_url = models.URLField()
     name = models.CharField(max_length=50, null=True, blank=True)
     description = models.TextField(max_length=255, null=True, blank=True)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)
@@ -52,7 +52,7 @@ class RestaurantImages(TimeStampedModel):
     
 class Food_category (models.Model):
     name = models.CharField(max_length=20)
-    image = models.ImageField(upload_to="images/food_category", default="images/food_category/default.png")
+    image = models.ImageField(upload_to="food_category", blank=True, null=True, default="food_category/default.png")
     description = models.TextField(max_length=255, blank=True, null=True)
     
     def __str__(self):
@@ -61,7 +61,7 @@ class Food_category (models.Model):
 class Subfood_category (models.Model):
     name = models.CharField(max_length=20)
     category = models.ForeignKey(Food_category, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to="images/subfood_category", default="images/subfood_category/default.png")
+    image = models.ImageField(upload_to="subfood_category", blank=True, null=True, default="subfood_category/default.png")
     description = models.TextField(max_length=255, blank=True, null=True)
 
     def __str__(self):
@@ -69,7 +69,7 @@ class Subfood_category (models.Model):
 
 class Dish(TimeStampedModel):
     name = models.CharField(max_length=50)
-    image = models.ImageField(upload_to="images/dishes/")
+    image_url = models.URLField()
     price = models.IntegerField()
     sub_category = models.ManyToManyField(Subfood_category)
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE)

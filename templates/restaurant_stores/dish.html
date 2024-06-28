@@ -3,7 +3,7 @@
 {% load filters %} 
 <div class="flex justify-center flex-wrap gap-10">
     <div>
-        <img src="/media/{{dish.image}}" alt="Dish Image" class="w-60 object-cover mb-5">
+        <img src="{{dish.image_url}}" alt="Dish Image" class="w-60 object-cover mb-5">
         <h1 class="text-3xl mb-2">{{dish.name}}</h1>
         <p class="mb-2">{{dish.description}}</p>
         <p>From, <span class="font-bold">{{dish.restaurant}}</span></p>
@@ -55,7 +55,7 @@
             >
               <img
                 class="w-12 h-12 rounded-full"
-                src="/media/{{r.user.profile_picture}}"
+                src="{{r.user.profile_picture_url}}"
                 alt="profile picture"
               />
               <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">

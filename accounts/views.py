@@ -9,6 +9,7 @@ from .form_validator import is_valid_email, is_valid_username,is_valid_password
 from random import randint
 from json import loads
 from .forms import CustomUserUpdateForm, ChangeUsernameForm, ChangePasswordForm, ChangeEmailForm
+from utils.cloudinary import upload_to_cloudinary
 
 def loginUser(req):
     if req.method == 'POST':
@@ -100,7 +101,7 @@ def profile(req):
         "is_email_verified" : custom_user.is_email_verified,
         "is_phone_verified" : custom_user.is_phone_verified,
         "username" : custom_user.username,
-        "profile_picture" : custom_user.profile_picture,
+        "profile_picture_url" : custom_user.profile_picture_url,
         "phone_country_code" : custom_user.phone_country_code,
         "phone" : custom_user.phone
     }
@@ -109,7 +110,7 @@ def profile(req):
             u_r = {
                 "name" : u_r.name,
                 "description" : u_r.description,
-                "image_logo" : u_r.image_logo,
+                "logo_url" : u_r.logo_url,
                 "pk" : u_r.pk
             }
     context = {
@@ -178,8 +179,20 @@ def change_profile_picture(req):
     if req.FILES.get('profile_picture') is None:
         return JsonResponse({"status" : "error", "message" : "Profile Picture is required"}, status=400)
     
-    req.user.profile_picture = req.FILES.get('profile_picture')
-    req.user.save()
+    try:
+
+        file = req.FILES['profile_picture']
+        profile_picture_url = upload_to_cloudinary(file)
+
+        if profile_picture_url is None:
+            return JsonResponse({"status" : "error", "message" : "Server Not Responsing"}, status=500)
+        
+        req.user.profile_picture_url = profile_picture_url
+        req.user.save()
+
+
+    except Exception as e:
+        return JsonResponse({"status" : "error", "message" : str(e)}, status=500)
 
     messages.success(req, 'Profile Picture Updated')
     return redirect('/accounts/profile')

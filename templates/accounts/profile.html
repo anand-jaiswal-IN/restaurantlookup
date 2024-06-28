@@ -3,7 +3,7 @@
 <div class="container profile-section flex flex-wrap justify-between">
   <div class="left-profile-section sm:1/2 lg:w-1/2 text-center mb-10 lg:mb-0">
     <img
-      src="/media/{{custom_user.profile_picture}}"
+      src="{{custom_user.profile_picture_url}}"
       class="w-48 h-48 bg-gray-300 shrink-0 mx-auto"
     />
     <p class="font-bold">{{custom_user.username}}</p>
@@ -107,7 +107,7 @@
     <a href="#">
       <img
         class="rounded-t-lg max-h-48 min-w-full bg-cover"
-        src="/media/{{u_r.image_logo}}"
+        src="{{u_r.logo_url}}"
         alt=""
       />
     </a>

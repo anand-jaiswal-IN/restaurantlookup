@@ -15,7 +15,7 @@ class CustomUserAdmin(UserAdmin):
                     "is_phone_verified", ),
                     ("phone_country_code", 
                     "phone", ),
-                    "profile_picture", 
+                    "profile_picture_url", 
                     "date_of_birth", 
                     "biography"
                 )

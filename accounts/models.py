@@ -31,7 +31,9 @@ class CustomUser(AbstractUser):
     is_phone_verified = models.BooleanField(default=False)
     phone_country_code = models.CharField(default="+91", choices=country_phone_codes, max_length=10)
     phone = models.CharField(max_length=15, blank=True, null=True)
-    profile_picture = models.ImageField(upload_to="images/accounts", default="images/accounts/default.png")
+
+    profile_picture_url = models.URLField(default="https://res.cloudinary.com/dgzc1nbnk/image/upload/v1719566986/profiles.png")
+
     date_of_birth = models.DateField(null=True, blank=True)
     gender = models.CharField(choices=gender_choices, blank=True, max_length=1)
     biography = models.TextField(blank=True)

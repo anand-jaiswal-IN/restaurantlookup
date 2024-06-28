@@ -3,8 +3,9 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.http import require_POST
 from .models import Restaurant, RestaurantImages, Dish, Address, Subfood_category
 from reviews.models import RatingRestaurant, RatingDish
-from .forms import AddRestaurantForm, AddAddressForm, UpdateRestaurantForm, RestaurantImageLogoForm , AddDishForm, AddRestaurantImageForm
+from .forms import AddRestaurantForm, AddAddressForm, UpdateRestaurantForm, AddDishForm, AddRestaurantImageForm
 from django.contrib import messages
+from utils.cloudinary import upload_to_cloudinary
 from json import loads
 
 def home(req):
@@ -80,11 +81,18 @@ def your_restaurant(req, restaurant_id):
 def add_restaurant(req):
     
     if req.method == 'POST':
-        form = AddRestaurantForm(req.POST, req.FILES)
+        form = AddRestaurantForm(req.POST)
+        image_logo = req.FILES.get("image_logo")
+        restaurant_logo_url = upload_to_cloudinary(image_logo)
+
+        if restaurant_logo_url is None:
+            messages.error(req, "Failed to upload image")
+            return redirect("/add_restaurant/")
         
         if form.is_valid():
             restaurant = form.save(commit=False)
             restaurant.user = req.user
+            restaurant.logo_url = restaurant_logo_url
             restaurant.save()
             
             if not req.user.is_restaurant_user_type():
@@ -182,22 +190,20 @@ def delete_restaurant_image(req):
 @require_POST
 def update_restaurant_logo(req, restaurant_id):
     try:
-        if 'image_logo' in req.FILES:
-            form = RestaurantImageLogoForm(req.POST, req.FILES)
-            if form.is_valid():
-                restaurant = Restaurant.objects.get(id=restaurant_id)
-                if restaurant.user != req.user:
-                    messages.error(req, "Unauthorized User")
-                    return redirect("/accounts/profile/")
-                restaurant.image_logo = form.cleaned_data.get("image_logo")
-                restaurant.save()
-                messages.success(req, f"Successfully updated your restaurant logo")
-                return redirect(f"/your_restaurant/{restaurant_id}/")
-            else:
-                messages.error(req, form.errors)
-        else:
+        if not 'image_logo' in req.FILES:
             messages.error(req, "No logo image uploaded")
             return redirect(f"/your_restaurant/{restaurant_id}/")
+        
+        image_logo = req.FILES.get('image_logo')
+        image_logo_url = upload_to_cloudinary(image_logo)
+
+        if image_logo_url is None:
+            messages.error(req, "Failed to upload image")
+            return redirect(f"/your_restaurant/{restaurant_id}/")
+        
+        Restaurant.objects.filter(pk=restaurant_id).update(logo_url=image_logo_url)
+        return redirect(f"/your_restaurant/{restaurant_id}/")
+    
     except Exception as e:
         messages.error(req, f"Something went wrong: {str(e)}")
         return redirect(f"/your_restaurant/{restaurant_id}/")
@@ -205,18 +211,25 @@ def update_restaurant_logo(req, restaurant_id):
 def add_restaurant_image(req, restaurant_id):
     
     if req.method == 'POST':
-        if Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
-            restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
-        else:
+        if not Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
             messages.error(req, "Unauthorized User")
             return render("/accounts/profile/")
         
-        form = AddRestaurantImageForm(req.POST, req.FILES)
+        restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
+
+        form = AddRestaurantImageForm(req.POST)
+        image = req.FILES.get('image')
+        image_url = upload_to_cloudinary(image)
+
+        if image_url is None:
+            messages.error(req, "Failed to upload image")
+            return redirect(f"/your_restaurant/{restaurant_id}/")
 
         if form.is_valid():
-            image = form.save(commit=False)
-            image.restaurant = restaurant
-            image.save()
+            r_image = form.save(commit=False)
+            r_image.restaurant = restaurant
+            r_image.image_url = image_url
+            r_image.save()
             messages.success(req, f"Successfully added image to your restaurant {restaurant.name}")
             return redirect(f"/your_restaurant/{restaurant_id}/")
         else:
@@ -243,11 +256,20 @@ def add_restaurant_dish(req, restaurant_id):
             messages.error(req, "Unauthorized User")
             return render("/accounts/profile/")
         
+        image = req.FILES.get('image')
+        image_url = upload_to_cloudinary(image)
+
+        if image_url is None:
+            messages.error(req, "Failed to upload image")
+            return redirect(f"/add_restaurant_dish/{restaurant_id}/")
+        
         restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
-        form = AddDishForm(req.POST, req.FILES)    
+        form = AddDishForm(req.POST)
+
         if form.is_valid():
             dish = form.save(commit=False)
             dish.restaurant = restaurant
+            dish.image_url = image_url
             dish.save()
             subcategories = form.cleaned_data['sub_category']
             dish.sub_category.set(subcategories)  
@@ -257,18 +279,18 @@ def add_restaurant_dish(req, restaurant_id):
             messages.error(req, form.errors)
             return redirect(f"/add_restaurant_dish/{restaurant_id}/")
         
-    else :
-        if Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
-            restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
-        else:
-            messages.error(req, "Unauthorized User")
-            return redirect("/accounts/profile/")
-        context = {
-            "title" : "Add Restaurant Dish",
-            "subCategories" : Subfood_category.objects.all(),
-            "restaurant" : {"name" : restaurant.name, "pk" : restaurant.pk}
-        }
-        return render(req, "restaurant_stores/add_restaurant_dish.html", context)
+    if not Restaurant.objects.filter(user=req.user, pk=restaurant_id).exists():
+        messages.error(req, "Unauthorized User")
+        return redirect("/accounts/profile/")
+    
+    restaurant = Restaurant.objects.filter(user=req.user).get(pk=restaurant_id)
+    
+    context = {
+        "title" : "Add Restaurant Dish",
+        "subCategories" : Subfood_category.objects.all(),
+        "restaurant" : {"name" : restaurant.name, "pk" : restaurant.pk}
+    }
+    return render(req, "restaurant_stores/add_restaurant_dish.html", context)
     
 def dish(req, dish_id):
     if not Dish.objects.filter(pk=dish_id).exists():

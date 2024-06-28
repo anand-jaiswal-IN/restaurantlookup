@@ -15,7 +15,7 @@
       {% for r in restaurant_images %}
       <div class="hidden duration-700 ease-in-out" data-carousel-item>
         <img
-          src="/media/{{r.image}}"
+          src="{{r.image_url}}"
           class="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2"
           alt="..."
         />
@@ -100,7 +100,7 @@
         class="bg-white dark:bg-gray-800 rounded-lg overflow-hidden shadow-lg transition duration-500"
       >
         <img
-          src="/media/{{d.image}}"
+          src="{{d.image_url}}"
           alt="Food Image"
           class="w-full h-48 object-cover"
         />
@@ -228,7 +228,7 @@
           >
             <img
               class="w-12 h-12 rounded-full"
-              src="/media/{{r.user.profile_picture}}"
+              src="{{r.user.profile_picture_url}}"
               alt="profile picture"
             />
             <div class="flex items-center divide-x-2 rtl:divide-x-reverse divide-gray-300 dark:divide-gray-700">
