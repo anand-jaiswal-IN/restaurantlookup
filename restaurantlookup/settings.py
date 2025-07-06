@@ -11,12 +11,9 @@ load_dotenv(BASE_DIR / ".env")
 SECRET_KEY = environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = environ.get("DEBUG")
 
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = environ.get("ALLOWED_HOSTS").split(",")
 
 
 # Application definition
