@@ -85,6 +85,7 @@
   const donationForm = document.getElementById("donationForm");
   const amountInput = document.getElementById("amountInput");
   const rzpButton1 = document.getElementById("rzp-button1");
+  const razorpay_key_id = "{{razorpay_key_id}}";
   var order_rzp = null;
   donationForm.onsubmit = (e) => {
     e.preventDefault();
@@ -101,7 +102,7 @@
         if (xhttp.status == 200) {
           order_rzp = JSON.parse(xhttp.responseText);
           var options = {
-            key: "rzp_live_J7Bmlu1c8aBLV3", // Enter the Key ID generated from the Dashboard
+            key: razorpay_key_id, // Enter the Key ID generated from the Dashboard
             amount: order_rzp.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
             currency: order_rzp.currency,
             name: "Restaurant Lookup", //your business name

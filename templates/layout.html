@@ -5,7 +5,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="{% static 'tailwind/src/output.css' %}" />
+    <link
+      rel="icon"
+      href="{% static 'images/favicon.ico' %}"
+      type="image/x-icon"
+    />
     {% if css %}
+
     <link rel="stylesheet" href="{% static css %}" />
     {% endif %}
     <title>{% block title %}My Site{% endblock %}</title>
@@ -22,14 +28,10 @@
             class="flex items-center space-x-3 rtl:space-x-reverse"
           >
             <img
-              src="{% static 'images/logo.jpg' %}"
-              class="h-8"
+              src="{% static 'images/logo.png' %}"
+              class="h-12"
               alt="Restaurant Logo"
             />
-            <span
-              class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-              >Restaurant Lookup</span
-            >
           </a>
           <button
             onclick="toggleTheme()"
@@ -43,8 +45,9 @@
           {% if user.is_authenticated %}
           <a
             href="{% url 'donation:donation_page' %}"
-            data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
-            class="text-white bg-green-400 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
+            data-dropdown-toggle="dropdownHover"
+            data-dropdown-trigger="hover"
+            class="text-white bg-green-600 hover:bg-green-500 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:hover:bg-green-700 dark:focus:ring-green-800"
             >Donate</a
           >
           {% if not user.is_email_verified %}
@@ -54,29 +57,56 @@
             >Verify Email</a
           >
           {% endif %}
-          
+
           <a
             href="{% url 'accounts:profile' %}"
-            data-dropdown-toggle="dropdownHover" data-dropdown-trigger="hover" 
+            data-dropdown-toggle="dropdownHover"
+            data-dropdown-trigger="hover"
             class="text-sm text-blue-600 dark:text-blue-500 hover:underline"
             >{{user.username}}</a
           >
-          <div id="dropdownHover" class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
-            <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownHoverButton">
+          <div
+            id="dropdownHover"
+            class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+          >
+            <ul
+              class="py-2 text-sm text-gray-700 dark:text-gray-200"
+              aria-labelledby="dropdownHoverButton"
+            >
               <li>
-                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Profile</a>
+                <a
+                  href="{% url 'accounts:profile' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Profile</a
+                >
               </li>
               <li>
-                <a href="{% url 'accounts:update_user_details' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Update Details</a>
+                <a
+                  href="{% url 'accounts:update_user_details' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Update Details</a
+                >
               </li>
               <li>
-                <a href="{% url 'accounts:change_username' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change Username</a>
+                <a
+                  href="{% url 'accounts:change_username' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Change Username</a
+                >
               </li>
               <li>
-                <a href="{% url 'accounts:change_password' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change Password</a>
+                <a
+                  href="{% url 'accounts:change_password' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Change Password</a
+                >
               </li>
               <li>
-                <a href="{% url 'accounts:change_email' %}" class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white">Change E-mail</a>
+                <a
+                  href="{% url 'accounts:change_email' %}"
+                  class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+                  >Change E-mail</a
+                >
               </li>
             </ul>
           </div>
@@ -114,13 +144,15 @@
                 >Home</a
               >
             </li>
-            {% comment %} <li>
+            {% comment %}
+            <li>
               <a
                 href="/admin"
                 class="text-gray-900 dark:text-white hover:underline"
                 >Admin</a
               >
-            </li> {% endcomment %}
+            </li>
+            {% endcomment %}
             <li>
               <a
                 href="{% url 'restaurant_stores:restaurant_stores' %}"
@@ -134,21 +166,21 @@
                 href="/accounts/profile/#yourRestaurantSection"
                 class="text-gray-900 dark:text-white hover:underline"
                 >Your Restaurant</a
-              > 
+              >
             </li>
             <li>
               <a
                 href="{% url 'reviews:create_token_review' %}"
                 class="text-gray-900 dark:text-white hover:underline"
                 >Create Token</a
-              > 
+              >
             </li>
             <li>
               <a
                 href="{% url 'reviews:pending_review_token' %}"
                 class="text-gray-900 dark:text-white hover:underline"
                 >Pending Review Token</a
-              > 
+              >
             </li>
             {% elif user.is_authenticated %}
             <li>
@@ -156,7 +188,7 @@
                 href="{% url 'reviews:pending_review_token' %}"
                 class="text-gray-900 dark:text-white hover:underline"
                 >Pending Review Token</a
-              > 
+              >
             </li>
             {% endif %}
           </ul>
@@ -207,23 +239,21 @@
               class="flex items-center"
             >
               <img
-                src="{% static 'images/logo.jpg' %}"
-                class="h-8 me-3"
+                src="{% static 'images/logo.png' %}"
+                class="h-12 me-3"
                 alt="Restaurant Logo"
               />
-              <span
-                class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white"
-                >Restaurant Lookup</span
-              >
             </a>
           </div>
           <div class="sm:flex sm:items-center sm:justify-between">
-          <span class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
-            >© 2024
-            <a href="https://flowbite.com/" class="hover:underline">Restaurant Loopkup</a
-            >. All Rights Reserved.
-          </span>
-        </div>
+            <span
+              class="text-sm text-gray-500 sm:text-center dark:text-gray-400"
+              >© 2024
+              <a href="https://flowbite.com/" class="hover:underline"
+                >Restaurant Loopkup</a
+              >. All Rights Reserved.
+            </span>
+          </div>
         </div>
       </div>
     </footer>
